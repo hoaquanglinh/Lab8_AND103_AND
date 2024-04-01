@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <androidx.cardview.widget.CardView
-            android:layout_width="185dp"
+            android:layout_width="170dp"
             android:layout_height="230dp"
             app:cardCornerRadius="25dp">
 
@@ -39,30 +39,6 @@
                         android:layout_height="20dp"
                         android:layout_margin="5dp"
                         app:tint="#383A3E" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="54dp"
-                    android:layout_height="23dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:alpha="5"
-                    android:layout_gravity="end"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp" />
-
-                    <TextView
-                        android:id="@+id/tv_evaluate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="4.5"
-                        android:textColor="#D17842"
-                        android:textSize="12dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -113,13 +89,13 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_marginRight="10dp"
-                            android:backgroundTint="#EC2578"
+                            android:backgroundTint="#43A047"
                             android:elevation="6dp"
                             app:cardCornerRadius="50dp">
 
                             <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
+                                android:layout_width="14dp"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center" />
                         </androidx.cardview.widget.CardView>
                     </LinearLayout>

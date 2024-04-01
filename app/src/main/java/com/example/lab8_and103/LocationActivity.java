@@ -1,7 +1,5 @@
 package com.example.lab8_and103;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -17,13 +15,12 @@ import com.example.lab8_and103.databinding.ActivityLocationBinding;
 import com.example.lab8_and103.models.District;
 import com.example.lab8_and103.models.DistrictRequest;
 import com.example.lab8_and103.models.Province;
+import com.example.lab8_and103.models.ResponseGHN;
 import com.example.lab8_and103.models.Ward;
-import com.example.lab8_and103.services.GHNRequest;
 import com.example.lab8_and103.services.GHNServices;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -64,7 +61,7 @@ public class LocationActivity extends AppCompatActivity {
         }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://dev-online-gateway.ghn.vn/")
+                .baseUrl(ghnServices.GHN_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(new OkHttpClient.Builder().addInterceptor(new Interceptor() {
                     @Override
@@ -80,20 +77,20 @@ public class LocationActivity extends AppCompatActivity {
 
         ghnServices = retrofit.create((GHNServices.class));
 
-        Call<ArrayList<Province>> call = ghnServices.getListProvince();
-        call.enqueue(new Callback<ArrayList<Province>>() {
+        Call<ResponseGHN<ArrayList<Province>>> call = ghnServices.getListProvince();
+        call.enqueue(new Callback<ResponseGHN<ArrayList<Province>>>() {
             @Override
-            public void onResponse(Call<ArrayList<Province>> call, Response<ArrayList<Province>> response) {
+            public void onResponse(Call<ResponseGHN<ArrayList<Province>>> call, Response<ResponseGHN<ArrayList<Province>>> response) {
                 if(response.isSuccessful()){
-                    ArrayList<Province> ds = new ArrayList<>(response.body());
-                    SetDataSpinProvince(ds);
-                }else{
-                    Toast.makeText(LocationActivity.this, "Loi nguoc lai", Toast.LENGTH_SHORT).show();
+                    if(response.body().getCode() == 200){
+                        ArrayList<Province> ds = new ArrayList<>(response.body().getData());
+                        SetDataSpinProvince(ds);
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Province>> call, Throwable t) {
+            public void onFailure(Call<ResponseGHN<ArrayList<Province>>> call, Throwable t) {
                 Log.e("API Error", "Error: " + t.getMessage());
             }
         });
@@ -114,20 +111,18 @@ public class LocationActivity extends AppCompatActivity {
                 ProvinceID = ((Province) parent.getAdapter().getItem(position)).getProvinceID();
                 DistrictRequest districtRequest = new DistrictRequest(ProvinceID);
 
-                Call<ArrayList<District>> call = ghnServices.getListDistrict(districtRequest);
-                call.enqueue(new Callback<ArrayList<District>>() {
+                Call<ResponseGHN<ArrayList<District>>> call = ghnServices.getListDistrict(districtRequest);
+                call.enqueue(new Callback<ResponseGHN<ArrayList<District>>>() {
                     @Override
-                    public void onResponse(Call<ArrayList<District>> call, Response<ArrayList<District>> response) {
+                    public void onResponse(Call<ResponseGHN<ArrayList<District>>> call, Response<ResponseGHN<ArrayList<District>>> response) {
                         if (response.isSuccessful()){
-                            ArrayList<District> ds = new ArrayList<>(response.body());
+                            ArrayList<District> ds = new ArrayList<>(response.body().getData());
                             SetDataSpinDistrict(ds);
-                        }else{
-                            Toast.makeText(LocationActivity.this, "Loi nguoc lai", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ArrayList<District>> call, Throwable t) {
+                    public void onFailure(Call<ResponseGHN<ArrayList<District>>> call, Throwable t) {
                         Log.e("API Error", "Error: " + t.getMessage());
                     }
                 });
@@ -135,16 +130,16 @@ public class LocationActivity extends AppCompatActivity {
             } else if (parent.getId() == R.id.sp_district) {
                 DistrictID = ((District) parent.getAdapter().getItem(position)).getDistrictID();
 
-                Call<ArrayList<Ward>> call = ghnServices.getListWard(DistrictID);
-                call.enqueue(new Callback<ArrayList<Ward>>() {
+                Call<ResponseGHN<ArrayList<Ward>>> call = ghnServices.getListWard(DistrictID);
+                call.enqueue(new Callback<ResponseGHN<ArrayList<Ward>>>() {
                     @Override
-                    public void onResponse(Call<ArrayList<Ward>> call, Response<ArrayList<Ward>> response) {
-                        ArrayList<Ward> ds = new ArrayList<>(response.body());
+                    public void onResponse(Call<ResponseGHN<ArrayList<Ward>>> call, Response<ResponseGHN<ArrayList<Ward>>> response) {
+                        ArrayList<Ward> ds = new ArrayList<>(response.body().getData());
                         SetDataSpinWard(ds);
                     }
 
                     @Override
-                    public void onFailure(Call<ArrayList<Ward>> call, Throwable t) {
+                    public void onFailure(Call<ResponseGHN<ArrayList<Ward>>> call, Throwable t) {
                         Log.e("API Error", "Error: " + t.getMessage());
                     }
                 });

@@ -44,7 +44,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
         String productID = dt.getProductId();
 
-        holder.tv_evaluate.setText(String.valueOf(dt.getRate()));
         holder.tv_nameProduct.setText(dt.getProductName());
 
         Locale vietnamLocale = new Locale("vi", "VN");
@@ -84,7 +83,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         ImageView img_productItem;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_evaluate = itemView.findViewById(R.id.tv_evaluate);
             tv_nameProduct = itemView.findViewById(R.id.tv_nameProduct);
             addToCart = itemView.findViewById(R.id.addToCart);
             tv_priceProduct = itemView.findViewById(R.id.tv_priceProduct);
